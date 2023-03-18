@@ -5,6 +5,7 @@ import 'package:jds_weather/data/model/repository/repository.dart';
 import '../network/network_location.dart';
 import '../network/network_weather.dart';
 import '../prov_model.dart';
+import '../city_model.dart';
 
 class RepositoryImpl implements Repository {
   final networkLocation = Get.find<NetworkLocation>();
@@ -15,6 +16,16 @@ class RepositoryImpl implements Repository {
     try {
       final response = await networkLocation.dio.get('/api/daerahindonesia/provinsi');
       return ProvModel.fromJson(response.data);
+    } on DioError catch (e) {
+      throw Exception(e.message);
+    }
+  }
+
+  @override
+  Future<CityModel?> cityGet(String idProv) async {
+    try {
+      final response = await networkLocation.dio.get('/api/daerahindonesia/kota?id_provinsi=$idProv');
+      return CityModel.fromJson(response.data);
     } on DioError catch (e) {
       throw Exception(e.message);
     }
