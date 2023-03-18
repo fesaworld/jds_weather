@@ -21,7 +21,7 @@ class RepositoryImpl implements Repository {
       final response = await networkLocation.dio.get('/api/daerahindonesia/provinsi');
       return ProvModel.fromJson(response.data);
     } on DioError catch (e) {
-      throw Exception(e.message);
+      throw e.response?.data?['message'];
     }
   }
 
@@ -31,7 +31,7 @@ class RepositoryImpl implements Repository {
       final response = await networkLocation.dio.get('/api/daerahindonesia/kota?id_provinsi=$idProv');
       return CityModel.fromJson(response.data);
     } on DioError catch (e) {
-      throw Exception(e.message);
+      throw e.response?.data?['message'];
     }
   }
 
