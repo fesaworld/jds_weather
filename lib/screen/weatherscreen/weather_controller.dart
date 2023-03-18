@@ -45,4 +45,19 @@ class WeatherController extends BaseController {
     scrollController.removeListener(() { });
   }
 
+  String greetingsGet(String name) {
+    int hour = DateTime.now().hour;
+    String greetings = '';
+    if (hour >= 0 && hour < 10){
+      greetings = 'Selamat pagi, $name';
+    } else if (hour >= 10 && hour < 16) {
+      greetings = 'Selamat siang, $name';
+    } else if (hour >= 16 && hour < 18) {
+      greetings = 'Selamat sore, $name';
+    } else {
+      greetings = 'Selamat Malam, $name';
+    }
+    return greetings;
+  }
+
 }
