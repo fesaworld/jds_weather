@@ -13,11 +13,20 @@ class SplashScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.blue,
-          body: Center(
-              child: Text(
-                  'Weather App',
-                  style: GoogleFonts.karla(fontSize: 20, fontWeight: FontWeight.w700)
-              )
+          body: Container(
+            height: Get.height,
+            width: Get.width,
+            decoration: const BoxDecoration(
+                color: Colors.blueAccent,
+                image: DecorationImage(
+                    image: AssetImage('assets/image/background.jpg'),
+                    fit: BoxFit.cover)),
+            child: Center(
+                child: Text(
+                    'Weather App',
+                    style: GoogleFonts.karla(fontSize: 40, fontWeight: FontWeight.w700)
+                )
+            ),
           ),
         );
       },
