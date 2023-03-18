@@ -111,6 +111,7 @@ class MainController extends BaseController {
 
   void loadingDialog(BuildContext context){
     showDialog<String>(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => const LoadingDialogWidget()
     );
