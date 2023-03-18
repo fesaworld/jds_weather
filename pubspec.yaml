@@ -41,6 +41,7 @@ dependencies:
   search_choices: ^2.2.1
   intl: ^0.18.0
   flutter_svg: ^2.0.4
+  connectivity_plus: ^3.0.3
 
 dev_dependencies:
   flutter_test:
