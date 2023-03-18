@@ -350,7 +350,10 @@ class MainScreen extends StatelessWidget {
 
                                   controller.update();
                                 }else{
-                                  Get.showSnackbar(GetSnackBar(message: 'Success', duration: Duration(seconds: 3),));
+                                  controller.getWeather(
+                                      city: controller.selectedCity!,
+                                      name: controller.nameController.text
+                                  );
                                 }
                               },
                               child: Text(
