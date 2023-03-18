@@ -6,6 +6,7 @@ import '../network/network_location.dart';
 import '../network/network_weather.dart';
 import '../prov_model.dart';
 import '../city_model.dart';
+import '../weather_5day_model.dart';
 import '../weather_now_model.dart';
 
 class RepositoryImpl implements Repository {
@@ -39,6 +40,16 @@ class RepositoryImpl implements Repository {
     try {
       final response = await networkWeather.dio.get('/data/2.5/weather?q=$city&appid=$key&units=metric');
       return WeatherNowModel.fromJson(response.data);
+    } on DioError catch (e) {
+      throw e.response?.data?['message'];
+    }
+  }
+
+  @override
+  Future<Weather5DayModel?> weather5DayGet(String city) async {
+    try {
+      final response = await networkWeather.dio.get('/data/2.5/forecast?q=$city&appid=$key&units=metric');
+      return Weather5DayModel.fromJson(response.data);
     } on DioError catch (e) {
       throw e.response?.data?['message'];
     }
