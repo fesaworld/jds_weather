@@ -6,6 +6,7 @@ import '../../data/model/city_model.dart';
 import '../../data/model/prov_model.dart';
 import '../../data/model/weather_5day_model.dart';
 import '../../data/model/weather_now_model.dart';
+import '../../widget/dialog/exception_dialog_widget.dart';
 import '../../widget/dialog/loading_dialog_widget.dart';
 
 class MainController extends BaseController {
@@ -50,8 +51,13 @@ class MainController extends BaseController {
       update();
       return response;
     } catch (e) {
-      print(e);
-      print('Data Provinsi gagal diambil');
+      String message;
+      if (e.toString() == 'Throw of null.') {
+        message = 'No Internet';
+      } else {
+        message = e.toString();
+      }
+      exceptionDialog(context, message);
     }
   }
 
@@ -62,8 +68,13 @@ class MainController extends BaseController {
       update();
       return response;
     } catch (e) {
-      print(e);
-      print('Data Kabupaten/kota gagal diambil');
+      String message;
+      if (e.toString() == 'Throw of null.') {
+        message = 'No Internet';
+      } else {
+        message = e.toString();
+      }
+      exceptionDialog(context, message);
     }
   }
 
@@ -85,10 +96,15 @@ class MainController extends BaseController {
 
       update();
     } catch (e) {
-      print(e);
-      print('Terjadi kesalahan dalam mengambil data weather');
-
       Navigator.pop(context, 'close');
+
+      String message;
+      if (e.toString() == 'Throw of null.') {
+        message = 'No Internet';
+      } else {
+        message = e.toString();
+      }
+      exceptionDialog(context, message);
     }
   }
 
@@ -96,6 +112,19 @@ class MainController extends BaseController {
     showDialog<String>(
         context: context,
         builder: (BuildContext context) => const LoadingDialogWidget()
+    );
+  }
+
+  void exceptionDialog(BuildContext context, String message){
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => ExceptionDialogWidget(
+          message: message,
+          onPressed: () {
+            Navigator.pop(context, 'close');
+            update();
+          },
+        )
     );
   }
 }
