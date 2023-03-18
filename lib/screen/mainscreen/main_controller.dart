@@ -8,6 +8,7 @@ import '../../data/model/weather_5day_model.dart';
 import '../../data/model/weather_now_model.dart';
 import '../../widget/dialog/exception_dialog_widget.dart';
 import '../../widget/dialog/loading_dialog_widget.dart';
+import '../weatherscreen/weather_screen.dart';
 
 class MainController extends BaseController {
   FocusNode nameFocus = FocusNode();
@@ -92,7 +93,7 @@ class MainController extends BaseController {
       weather5dayModel = response5Day;
 
       Navigator.pop(context, 'close');
-      Get.showSnackbar(GetSnackBar(message: 'Get weather data Success..', duration: Duration(seconds: 3),));
+      Get.to(() => const WeatherScreen(), arguments: [name, weatherNowModel, weather5dayModel]);
 
       update();
     } catch (e) {
