@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jds_weather/screen/weatherscreen/weather_controller.dart';
@@ -108,6 +109,74 @@ class WeatherScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ],
+                              ),
+                            ),
+                            Container(
+                              height: 110,
+                              width: Get.width,
+                              padding: EdgeInsets.only(left: 8, right: 8, top: 8),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: ColorPalette.primary, width: 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                elevation: 1,
+                                color: Colors.transparent,
+                                shadowColor: ColorPalette.white,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/humidity_percentage_icon.svg',
+                                            width: 30),
+                                        Text(
+                                          '${controller.weatherNowModel!.main!.humidity} %', style: title,),
+                                        Text('Humidity'),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/pressure_icon.svg',
+                                            width: 30),
+                                        Text(
+                                          '${controller.weatherNowModel!.main!.pressure} hpa', style: title,),
+                                        Text('Pressure'),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/cloud_icon.svg',
+                                            width: 30),
+                                        Text(
+                                          '${controller.weatherNowModel!.clouds!.all} %', style: title,),
+                                        Text('Cloudiness'),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/icons/wind_icon.svg',
+                                            width: 30),
+                                        Text(
+                                          '${controller.weatherNowModel!.wind!.gust.toString()} m/s', style: title,),
+                                        Text('Wind'),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
