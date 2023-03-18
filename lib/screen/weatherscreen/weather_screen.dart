@@ -24,7 +24,7 @@ class WeatherScreen extends StatelessWidget {
                     color: Colors.blueAccent,
                     image: DecorationImage(
                         image: AssetImage('assets/image/background.jpg'),
-                        fit: BoxFit.fitHeight)),
+                        fit: BoxFit.cover)),
                 child: Stack(
                   children: [
                     Container(
