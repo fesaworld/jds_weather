@@ -37,6 +37,8 @@ class WeatherController extends BaseController {
       // }
       update();
     });
+
+    filters();
   }
 
   @override

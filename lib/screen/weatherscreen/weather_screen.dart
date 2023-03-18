@@ -179,6 +179,108 @@ class WeatherScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: ColorPalette.primary, width: 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                elevation: 1,
+                                color: Colors.transparent,
+                                shadowColor: ColorPalette.white,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                                  child: SizedBox(
+                                    width: 115 * controller.dateData.length.toDouble(),
+                                    height: 85 * controller.dateData.length.toDouble(),
+                                    child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: controller.dateData.length,
+                                        itemBuilder: (context, indexOne){
+                                          return Container(
+                                            width: 85,
+                                            height: 85,
+                                            // color: Colors.red,
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  // color: Colors.yellow,
+                                                  width: 50,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      DateFormat.MEd().format(
+                                                          DateTime.parse(controller.dateData[indexOne][0]['date'])
+                                                      ).toString(),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ListView.builder(
+                                                    physics: NeverScrollableScrollPhysics(),
+                                                    scrollDirection: Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    itemCount: controller.dateData[indexOne].length,
+                                                    itemBuilder: (context, indexTwo) {
+                                                      return Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: Container(
+                                                          height: 70,
+                                                          width: 70,
+                                                          // color: Colors.blue,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              Text(
+                                                                DateFormat.Hm().format(
+                                                                    DateTime.parse(controller.dateData[indexOne][indexTwo]['date'])
+                                                                ).toString(),
+                                                                style: title.copyWith(fontSize: 12),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 40,
+                                                                width: 40,
+                                                                child: Image.network(
+                                                                  'http://openweathermap.org/img/w/${
+                                                                      controller.dateData[indexOne][indexTwo]['icon']
+                                                                  }.png',
+                                                                  fit: BoxFit.cover,
+                                                                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                                                    if (loadingProgress == null) {
+                                                                      return child;
+                                                                    }
+                                                                    return Center(
+                                                                      child: CircularProgressIndicator.adaptive(),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                '${controller.dateData[indexOne][indexTwo]['temp']} \u2103',
+                                                                style: title.copyWith(fontSize: 12),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
