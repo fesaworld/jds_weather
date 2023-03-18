@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:jds_weather/data/model/weather_now_model.dart';
 
 import '../../base/base_controller.dart';
@@ -13,6 +14,8 @@ class WeatherController extends BaseController {
 
   bool buttonVisible = true;
   ScrollController scrollController = ScrollController();
+
+  List<List<Map<String, dynamic>>>  dateData = [];
 
   @override
   void onInit() {
@@ -60,4 +63,28 @@ class WeatherController extends BaseController {
     return greetings;
   }
 
+  void filters() {
+    String date = '';
+    int indexOne = 0;
+    for(var data in weather5dayModel!.list!) {
+      if (indexOne == 0 || DateFormat.Md().format(DateTime.parse(data.dtTxt!)) != date){
+        date = DateFormat.Md().format(DateTime.parse(data.dtTxt!));
+
+        dateData.insert(indexOne, []);
+
+        for(var datas in weather5dayModel!.list!) {
+          if (DateFormat.Md().format(DateTime.parse(datas.dtTxt!)) == date) {
+
+            dateData[indexOne].add({
+              'date' : datas.dtTxt,
+              'icon' : datas.weather![0].icon,
+              'temp' : datas.main!.temp,
+            });
+
+          }
+        }
+        indexOne++;
+      }
+    }
+  }
 }
