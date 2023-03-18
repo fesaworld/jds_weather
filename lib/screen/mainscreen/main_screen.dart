@@ -61,6 +61,31 @@ class MainScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8)),
                                     contentPadding: const EdgeInsets.all(12),
                                   ),
+                                  onChanged: (name) {
+                                    if (name.isEmpty) {
+                                      controller.visibilityName = true;
+                                    }else {
+                                      controller.visibilityName = false;
+                                    }
+                                    controller.update();
+                                  },
+                                ),
+                                Visibility(
+                                  visible: controller.visibilityName,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.error,
+                                        color: ColorPalette.danger,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          'Masukkan nama anda',
+                                          style: subTitle.copyWith(fontSize: 12, color: ColorPalette.secondary.withOpacity(0.7)))
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -100,9 +125,13 @@ class MainScreen extends StatelessWidget {
                                         controller.selectedProv = data.nama;
 
                                         controller.getCity(controller.selectedProvId.toString());
+
+                                        controller.visibilityProv = false;
                                       }else if (value == null) {
                                         controller.selectedProvId = null;
                                         controller.selectedProv = null;
+
+                                        controller.visibilityProv = true;
                                       }
                                     }
                                     controller.update();
@@ -159,6 +188,23 @@ class MainScreen extends StatelessWidget {
                                     controller.nameFocus.unfocus();
                                   },
                                 ),
+                                Visibility(
+                                  visible: controller.visibilityProv,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.error,
+                                        color: ColorPalette.danger,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          'Silahkan pilih provinsi',
+                                          style: subTitle.copyWith(fontSize: 12, color: ColorPalette.secondary.withOpacity(0.7)))
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -191,14 +237,17 @@ class MainScreen extends StatelessWidget {
                                   hint: "Pilih Kabupaten/Kota",
                                   style: subTitle,
                                   onChanged: (value) {
-                                    for (var data in controller
-                                        .cityModel!.kotaKabupaten!) {
+                                    for (var data in controller.cityModel!.kotaKabupaten!) {
                                       if (value != null && value == data.nama) {
                                         controller.selectedCityId = data.id.toString();
                                         controller.selectedCity = data.nama;
+
+                                        controller.visibilityCity = false;
                                       } else if (value == null) {
                                         controller.selectedCityId = null;
                                         controller.selectedCity = null;
+
+                                        controller.visibilityCity = true;
                                       }
                                     }
                                     controller.update();
@@ -252,6 +301,23 @@ class MainScreen extends StatelessWidget {
                                     controller.nameFocus.unfocus();
                                   },
                                 ),
+                                Visibility(
+                                  visible: controller.visibilityCity,
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.error,
+                                        color: ColorPalette.danger,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          'Silahkan pilih kabupaten/kota',
+                                          style: subTitle.copyWith(fontSize: 12, color: ColorPalette.secondary.withOpacity(0.7)))
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -268,7 +334,24 @@ class MainScreen extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(8)),
                                   )),
                               onPressed: () {
+                                if (controller.nameController.text.isEmpty ||
+                                    controller.selectedProv == null ||
+                                    controller.selectedCity == null
+                                ) {
+                                  if(controller.nameController.text.isEmpty) {
+                                    controller.visibilityName = true;
+                                  }
+                                  if(controller.selectedProv == null) {
+                                    controller.visibilityProv = true;
+                                  }
+                                  if(controller.selectedProv == null) {
+                                    controller.visibilityCity = true;
+                                  }
 
+                                  controller.update();
+                                }else{
+                                  Get.showSnackbar(GetSnackBar(message: 'Success', duration: Duration(seconds: 3),));
+                                }
                               },
                               child: Text(
                                   'Proses',

@@ -16,6 +16,10 @@ class MainController extends BaseController {
   ProvModel? provModel;
   CityModel? cityModel;
 
+  bool visibilityName = false;
+  bool visibilityProv = false;
+  bool visibilityCity = false;
+
   @override
   void onInit() {
     // TODO: implement onInit
