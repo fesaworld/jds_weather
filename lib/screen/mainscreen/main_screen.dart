@@ -78,12 +78,34 @@ class MainScreen extends StatelessWidget {
                                 ),
                                 SearchChoices.single(
                                   autofocus: false,
-                                  items: const [],
+                                  items: controller.provModel != null
+                                      ? controller.provModel!.provinsi!
+                                      .map((item) =>
+                                      DropdownMenuItem<String>(
+                                        value: item.nama,
+                                        child: Text(
+                                            item.nama
+                                                .toString(),
+                                            style: subTitle),
+                                      ))
+                                      .toList()
+                                      : const [],
                                   value: controller.selectedProv,
                                   hint: "Pilih Provinsi",
                                   style: subTitle,
                                   onChanged: (value) {
+                                    for (var data in controller.provModel!.provinsi!) {
+                                      if (value != null && value == data.nama){
+                                        controller.selectedProvId = data.id.toString();
+                                        controller.selectedProv = data.nama;
 
+                                        controller.getCity(controller.selectedProvId.toString());
+                                      }else if (value == null) {
+                                        controller.selectedProvId = null;
+                                        controller.selectedProv = null;
+                                      }
+                                    }
+                                    controller.update();
                                   },
                                   dialogBox: false,
                                   isExpanded: true,
@@ -93,7 +115,12 @@ class MainScreen extends StatelessWidget {
                                       ? false
                                       : true,
                                   onClear: () {
+                                    controller.selectedCityId = null;
+                                    controller.selectedCity = null;
 
+                                    controller.selectedProvId = null;
+                                    controller.selectedProv = null;
+                                    controller.update();
                                   },
                                   menuConstraints: BoxConstraints.tight(
                                       const Size.fromHeight(350)),
@@ -148,12 +175,33 @@ class MainScreen extends StatelessWidget {
                                 ),
                                 SearchChoices.single(
                                   autofocus: false,
-                                  items: const [],
+                                  items: controller.cityModel != null
+                                      ? controller.cityModel!.kotaKabupaten!
+                                      .map((item) =>
+                                      DropdownMenuItem<String>(
+                                        value: item.nama,
+                                        child: Text(
+                                            item.nama
+                                                .toString(),
+                                            style: subTitle),
+                                      ))
+                                      .toList()
+                                      : const [],
                                   value: controller.selectedCity,
                                   hint: "Pilih Kabupaten/Kota",
                                   style: subTitle,
                                   onChanged: (value) {
-
+                                    for (var data in controller
+                                        .cityModel!.kotaKabupaten!) {
+                                      if (value != null && value == data.nama) {
+                                        controller.selectedCityId = data.id.toString();
+                                        controller.selectedCity = data.nama;
+                                      } else if (value == null) {
+                                        controller.selectedCityId = null;
+                                        controller.selectedCity = null;
+                                      }
+                                    }
+                                    controller.update();
                                   },
                                   dialogBox: false,
                                   isExpanded: true,
@@ -163,7 +211,9 @@ class MainScreen extends StatelessWidget {
                                       ? false
                                       : true,
                                   onClear: () {
-
+                                    controller.selectedCityId = null;
+                                    controller.selectedCity = null;
+                                    controller.update();
                                   },
                                   menuConstraints: BoxConstraints.tight(
                                       const Size.fromHeight(350)),
