@@ -46,9 +46,13 @@ class MainController extends BaseController {
     try {
       var response = await repository.provGet();
       provModel = response;
+
+      Get.back();
       update();
       return response;
     } catch (e) {
+      Get.back();
+
       String message;
       if (e.toString() == 'Throw of null.') {
         message = 'No Internet';
