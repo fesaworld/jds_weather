@@ -122,4 +122,20 @@ class MainController extends BaseController {
         },)
     );
   }
+
+  void onRefresh() {
+    nameController.text = '';
+    selectedProvId = null;
+    selectedProv = null;
+    selectedCityId = null;
+    selectedCity = null;
+
+    visibilityName = false;
+    visibilityProv = false;
+    visibilityCity = false;
+    update();
+
+    getProv();
+    loadingDialog();
+  }
 }
