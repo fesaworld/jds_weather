@@ -28,13 +28,10 @@ class MainController extends BaseController {
   bool visibilityProv = false;
   bool visibilityCity = false;
 
-  late BuildContext context;
-
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    context = Get.context!;
     getProv();
   }
 
@@ -58,7 +55,7 @@ class MainController extends BaseController {
       } else {
         message = e.toString();
       }
-      exceptionDialog(context, message);
+      exceptionDialog(message);
     }
   }
 
@@ -75,13 +72,13 @@ class MainController extends BaseController {
       } else {
         message = e.toString();
       }
-      exceptionDialog(context, message);
+      exceptionDialog(message);
     }
   }
 
   Future getWeather({required String city, required String name}) async {
     try {
-      loadingDialog(context);
+      loadingDialog();
 
       String _city = city!.replaceAll('Kota ', '');
       _city = _city.replaceAll('Kabupaten ', '');
@@ -92,12 +89,12 @@ class MainController extends BaseController {
       var response5Day = await repository.weather5DayGet(_city);
       weather5dayModel = response5Day;
 
-      Navigator.pop(context, 'close');
+      Get.back();
       Get.to(() => const WeatherScreen(), arguments: [name, weatherNowModel, weather5dayModel]);
 
       update();
     } catch (e) {
-      Navigator.pop(context, 'close');
+      Get.back();
 
       String message;
       if (e.toString() == 'Throw of null.') {
@@ -105,28 +102,24 @@ class MainController extends BaseController {
       } else {
         message = e.toString();
       }
-      exceptionDialog(context, message);
+      exceptionDialog(message);
     }
   }
 
-  void loadingDialog(BuildContext context){
-    showDialog<String>(
+  void loadingDialog(){
+    Get.dialog(
         barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => const LoadingDialogWidget()
+        const LoadingDialogWidget()
     );
   }
 
-  void exceptionDialog(BuildContext context, String message){
-    showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => ExceptionDialogWidget(
-          message: message,
-          onPressed: () {
-            Navigator.pop(context, 'close');
-            update();
-          },
-        )
+  void exceptionDialog(String message){
+    Get.dialog(
+      ExceptionDialogWidget(
+        message: message,
+        onPressed: () {
+          Get.back();
+        },)
     );
   }
 }
