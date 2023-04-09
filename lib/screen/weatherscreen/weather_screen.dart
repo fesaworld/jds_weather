@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jds_weather/screen/weatherscreen/weather_controller.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../const/color_pallete.dart';
 import '../../const/text_style.dart';
+import '../../data/model/chart_model.dart';
 
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({Key? key}) : super(key: key);
@@ -279,6 +281,62 @@ class WeatherScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount: controller.chartData.length,
+                                  itemBuilder: (context, indexChart) {
+                                    return Container(
+                                      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                                      height: 360,
+                                      width: Get.width,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(color: ColorPalette.primary, width: 1),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        elevation: 1,
+                                        color: Colors.transparent,
+                                        shadowColor: ColorPalette.white,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                DateFormat.yMMMMEEEEd()
+                                                    .format(DateTime.parse(
+                                                    controller.dateData[
+                                                    indexChart]
+                                                    [0]['date']))
+                                                    .toString(),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5,),
+                                            SfCartesianChart(
+                                              primaryXAxis: CategoryAxis(),
+                                              primaryYAxis: NumericAxis(),
+                                              tooltipBehavior: controller.tooltip,
+                                              series: <ChartSeries<ChartData, String>>[
+                                                ColumnSeries<ChartData, String>(
+                                                    dataSource: controller.chartData[indexChart],
+                                                    xValueMapper: (ChartData data, _) =>  DateFormat.Hm().format(DateTime.parse(data.xDate.toString())),
+                                                    yValueMapper: (ChartData data, _) => data.yTemp,
+                                                    name: 'Temp',
+                                                    color: Color.fromRGBO(8, 142, 255, 1))
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
                               ),
                             )
                           ],

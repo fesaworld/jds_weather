@@ -3,8 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jds_weather/data/model/weather_now_model.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../base/base_controller.dart';
+import '../../data/model/chart_model.dart';
 import '../../data/model/weather_5day_model.dart';
 import '../../widget/dialog/exception_dialog_widget.dart';
 import '../../widget/dialog/loading_dialog_widget.dart';
@@ -21,6 +23,9 @@ class WeatherController extends BaseController {
 
   List<List<Map<String, dynamic>>>  dateData = [];
 
+  late TooltipBehavior tooltip;
+  late List<List<ChartData>> chartData = [];
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -30,6 +35,8 @@ class WeatherController extends BaseController {
     city = Get.arguments[1];
     weatherNowModel = Get.arguments[2];
     weather5dayModel = Get.arguments[3];
+
+    tooltip = TooltipBehavior(enable: true);
 
     scrollController.addListener(() {
       if(scrollController.position.userScrollDirection == ScrollDirection.reverse){
@@ -92,6 +99,28 @@ class WeatherController extends BaseController {
           }
         }
         indexOne++;
+      }
+    }
+
+    chartData.clear();
+    String date1 = '';
+    int indexOne1 = 0;
+    for(var data1 in weather5dayModel!.list!) {
+      if (indexOne1 == 0 || DateFormat.Md().format(DateTime.parse(data1.dtTxt!)) != date1){
+        date1 = DateFormat.Md().format(DateTime.parse(data1.dtTxt!));
+
+        chartData.insert(indexOne1, []);
+
+        for(var datas1 in weather5dayModel!.list!) {
+          if (DateFormat.Md().format(DateTime.parse(datas1.dtTxt!)) == date1) {
+
+            chartData[indexOne1].add(
+                ChartData(DateTime.parse(datas1.dtTxt!), double.parse(datas1.main!.temp.toString()), datas1.weather![0].icon!)
+            );
+
+          }
+        }
+        indexOne1++;
       }
     }
   }
