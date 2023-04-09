@@ -193,7 +193,7 @@ class WeatherScreen extends StatelessWidget {
                                   scrollDirection: Axis.horizontal,
                                   physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
                                   child: SizedBox(
-                                    width: 115 * controller.dateData.length.toDouble(),
+                                    width: 140 * controller.dateData.length.toDouble(),
                                     height: 85 * controller.dateData.length.toDouble(),
                                     child: ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
@@ -207,11 +207,11 @@ class WeatherScreen extends StatelessWidget {
                                             // color: Colors.red,
                                             child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Container(
                                                   // color: Colors.yellow,
-                                                  width: 50,
+                                                  width: 40,
                                                   height: 50,
                                                   child: Center(
                                                     child: Text(
