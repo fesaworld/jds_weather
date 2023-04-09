@@ -72,7 +72,7 @@ class WeatherScreen extends StatelessWidget {
                                             height: 5,
                                           ),
                                           Text(
-                                            '${controller.weatherNowModel!.main!.temp!} \u2103',
+                                            '${controller.weatherNowModel!.main!.temp!} ${controller.isMetric ?'\u2103' :'\u2109'}',
                                             style: title.copyWith(
                                                 fontSize: 30),
                                           ),
@@ -263,7 +263,7 @@ class WeatherScreen extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                '${controller.dateData[indexOne][indexTwo]['temp']} \u2103',
+                                                                '${controller.dateData[indexOne][indexTwo]['temp']} ${controller.isMetric ?'\u2103' :'\u2109'}',
                                                                 style: title.copyWith(fontSize: 12),
                                                               ),
                                                             ],
@@ -286,17 +286,44 @@ class WeatherScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       child: Visibility(
                         visible: controller.buttonVisible,
-                        child: GestureDetector(
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: ColorPalette.body,
-                          ),
-                          onTap: () {
-                            Get.back();
-                          },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: ColorPalette.body,
+                              ),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                            Row(
+                              children: [
+                                Text('\u2109'),
+                                Switch(
+                                  activeColor: Colors.purple,
+                                  activeTrackColor: Colors.cyan,
+                                  inactiveThumbColor: Colors.purple,
+                                  inactiveTrackColor: Colors.cyan,
+                                  value: controller.isMetric,
+                                  onChanged: (value) {
+                                    controller.isMetric = value;
+                                    controller.update();
+
+                                    controller.updateTemp(
+                                        city: controller.city!,
+                                        temp: value ? 'metric' : 'imperial'
+                                    );
+                                  },
+                                ),
+                                Text('\u2103'),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ),

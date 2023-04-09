@@ -36,9 +36,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<WeatherNowModel?> weatherNowGet(String city) async {
+  Future<WeatherNowModel?> weatherNowGet(String city, String temp) async {
     try {
-      final response = await networkWeather.dio.get('/data/2.5/weather?q=$city&appid=$key&units=metric');
+      final response = await networkWeather.dio.get('/data/2.5/weather?q=$city&appid=$key&units=$temp');
       return WeatherNowModel.fromJson(response.data);
     } on DioError catch (e) {
       throw e.response?.data?['message'];
@@ -46,9 +46,9 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Weather5DayModel?> weather5DayGet(String city) async {
+  Future<Weather5DayModel?> weather5DayGet(String city, String temp) async {
     try {
-      final response = await networkWeather.dio.get('/data/2.5/forecast?q=$city&appid=$key&units=metric');
+      final response = await networkWeather.dio.get('/data/2.5/forecast?q=$city&appid=$key&units=$temp');
       return Weather5DayModel.fromJson(response.data);
     } on DioError catch (e) {
       throw e.response?.data?['message'];

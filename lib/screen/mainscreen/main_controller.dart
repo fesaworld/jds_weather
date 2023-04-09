@@ -87,14 +87,14 @@ class MainController extends BaseController {
       String _city = city!.replaceAll('Kota ', '');
       _city = _city.replaceAll('Kabupaten ', '');
 
-      var responseNow = await repository.weatherNowGet(_city);
+      var responseNow = await repository.weatherNowGet(_city, 'metric');
       weatherNowModel = responseNow;
 
-      var response5Day = await repository.weather5DayGet(_city);
+      var response5Day = await repository.weather5DayGet(_city, 'metric');
       weather5dayModel = response5Day;
 
       Get.back();
-      Get.to(() => const WeatherScreen(), arguments: [name, weatherNowModel, weather5dayModel]);
+      Get.to(() => const WeatherScreen(), arguments: [name, _city, weatherNowModel, weather5dayModel]);
 
       update();
     } catch (e) {

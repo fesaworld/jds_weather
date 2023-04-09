@@ -8,6 +8,6 @@ abstract class Repository {
   Future<ProvModel?> provGet();
   Future<CityModel?> cityGet(String idProv);
 
-  Future<WeatherNowModel?> weatherNowGet(String city);
-  Future<Weather5DayModel?> weather5DayGet(String city);
+  Future<WeatherNowModel?> weatherNowGet(String city, String temp);
+  Future<Weather5DayModel?> weather5DayGet(String city, String temp);
 }

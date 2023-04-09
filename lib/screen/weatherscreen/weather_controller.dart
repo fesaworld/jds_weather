@@ -6,9 +6,13 @@ import 'package:jds_weather/data/model/weather_now_model.dart';
 
 import '../../base/base_controller.dart';
 import '../../data/model/weather_5day_model.dart';
+import '../../widget/dialog/exception_dialog_widget.dart';
+import '../../widget/dialog/loading_dialog_widget.dart';
 
 class WeatherController extends BaseController {
   String? name;
+  String? city;
+  bool isMetric = true;
   WeatherNowModel? weatherNowModel;
   Weather5DayModel? weather5dayModel;
 
@@ -23,8 +27,9 @@ class WeatherController extends BaseController {
     super.onInit();
 
     name = Get.arguments[0];
-    weatherNowModel = Get.arguments[1];
-    weather5dayModel = Get.arguments[2];
+    city = Get.arguments[1];
+    weatherNowModel = Get.arguments[2];
+    weather5dayModel = Get.arguments[3];
 
     scrollController.addListener(() {
       if(scrollController.position.userScrollDirection == ScrollDirection.reverse){
@@ -66,6 +71,7 @@ class WeatherController extends BaseController {
   }
 
   void filters() {
+    dateData.clear();
     String date = '';
     int indexOne = 0;
     for(var data in weather5dayModel!.list!) {
@@ -88,5 +94,49 @@ class WeatherController extends BaseController {
         indexOne++;
       }
     }
+  }
+
+  Future updateTemp({required String city, required String temp}) async {
+    try {
+      loadingDialog();
+
+      var responseNow = await repository.weatherNowGet(city, temp);
+      weatherNowModel = responseNow;
+
+      var response5Day = await repository.weather5DayGet(city, temp);
+      weather5dayModel = response5Day;
+
+      Get.back();
+      filters();
+
+      update();
+    } catch (e) {
+      Get.back();
+
+      String message;
+      if (e.toString() == 'Throw of null.') {
+        message = 'No Internet';
+      } else {
+        message = e.toString();
+      }
+      exceptionDialog(message);
+    }
+  }
+
+  void loadingDialog(){
+    Get.dialog(
+        barrierDismissible: false,
+        const LoadingDialogWidget()
+    );
+  }
+
+  void exceptionDialog(String message){
+    Get.dialog(
+        ExceptionDialogWidget(
+          message: message,
+          onPressed: () {
+            Get.back();
+          },)
+    );
   }
 }
